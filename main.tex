@@ -1,0 +1,323 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Graphical Models Assignment 1}
+\author{William Sawtell, Xing Cheng, Habib Sarosh, \and Soydan Eskisan, Alessandro Vinci}
+
+\date{$17^{th}$ November 2020}
+
+\usepackage{natbib}
+\usepackage{graphicx}
+
+\begin{document}
+
+\maketitle
+
+\section{Question 1: Three Cards}
+
+
+\section{Question 2: Earthquakes}
+
+
+\section{Question 3: Meeting Scheduling}
+You are organising a trip to Scotland for your N friends. You booked the tickets on the Caledonian Sleeper train, departing from Euston station. Since you have all the tickets you decide that you need to meet at Euston station meeting point before the ticket gates. You all need to be there at 21:05 in order not to miss the train. However, it makes sense to ask people to come a bit earlier in case some of them are delayed. But how much earlier?
+
+\subsection{Question 3, Part a.}
+Here is the model for the delays that you are going to use. You are always on time. Let $D_i$ be a delay of your $i^{th}$ friend. You assume that all $D_i$-s are independent and identically distributed. $P(Di \leq 0) = 0.7$ (that is, with probability 0.7 your friend will come on time or earlier), $P(0 < Di < 5 mins) = 0.1, P(5 mins \leq Di < 10 mins) = 0.1, P(10 mins \leq Di < 15 mins) = 0.07, P(15 mins \leq Di < 20 mins) = 0.02, P(20 mins \leq Di) = 0.01$. 
+
+\newline
+\noindent
+You would like to meet as late as
+possible but still still catch a train with probability guaranteed to be
+at least 0.9. What time $T_0 = T_0(N)$ should you ask your friends to meet? Solve for N = 3, N = 5, N = 10. [10 marks]
+
+\subsubsection{Solution for general N}
+We can start by rewriting the distribution of the delays $D_i$ as a cumulative distribution. This is because we don't care $how$ early or late one of our friends is for the train, only if they are early or late.
+\newline
+
+\noindent
+$P(D_i \leq 0) = 0.7$
+\newline
+\noindent
+$P(D_i < 5) = P(D_i \leq 0) + _(0 < Di < 5) = 0.7 + 0.1 = 0.8$
+\newline
+\noindent
+$P(D_i < 10) = P(Di < 5) + P(5 \leq D_i < 10) = 0.8 + 0.1 = 0.9$
+\newline
+\noindent
+$P(D_i < 15) = P(D_i < 10) + P(10 \leq D_i < 15)= 0.9 + 0.07= 0.97$
+\newline
+\noindent
+$P(D_i < 20) = P(D_i < 15)+P(15 \leq D_i < 20) =0.97 + 0.02= 0.99$
+
+\vspace{5mm}
+\noindent
+Now, we can only make the train on time if $all$ of our friends are on time. If we call the maximum possible delay $D_0$, we require all of our friends to have a delay less than $D_0$. 
+\newline
+\noindent
+For the general case of N friends, the probability that all of our N friends will have a delay less than $D_0$ can be found by: 
+${N \choose N}P(D_i < D_0)^N = P(D_i < D_0)^N $
+\newline
+\noindent
+Note that we have used the fact that all of the friends are independent here.
+Now we can compute this probability $P(D_i < D_0)^N$ across all of the N's and across all of the $D_i$'s: 
+
+\begin{center}
+\begin{tabular}{ c c c }
+ $P(D_i \leq 0)=0.7$  & & \\ 
+ $P(D_i \leq 0)^3 = 0.343$ & $P(D_i \leq 0)^5 =0.168 $ & $P(D_i \leq 0)^{10} =0.028 $ \\ 
+ $P(D_i < 5)=0.8$ & & \\
+ $P(D_i < 5)^3 =0.512 $ & $P(D_i < 5)^5 =0.328 $ & $P(D_i < 5)^{10} =0.107 $ \\  
+ $P(D_i < 10)=0.9$ & & \\
+ $P(D_i < 10)^3 =0.729 $ & $P(D_i < 10)^5 =0.590 $ & $P(D_i < 10)^{10} = 0.349$ \\
+ $P(D_i < 15)=0.97$ & & \\ 
+ $P(D_i < 15)^3 =0.913 $ & $P(D_i < 15)^5 =0.859 $ & $P(D_i < 15)^{10} =0.737 $ \\
+ $P(D_i < 20)=0.99$ & & \\
+ $P(D_i < 20)^3 =0.970 $ & $P(D_i < 20)^5 =0.951 $ & $P(D_i < 20)^{10} =0.904 $ \\   
+\end{tabular}
+\end{center}
+
+\subsubsection{N=3 case}
+We can see that if we meet 10 minutes early, we have a 0.729 chance of all 3 friends having a delay less than 10: $P(D_i < 10)^3 =0.729$ Hence our chance of making the train is 0.729.
+\newline
+\noindent
+If we meet 15 minutes early though, we have a 0.913 chance of making the train: $P(D_i < 15)^3 =0.913$. Hence we need to meet 15 minutes early in this case.
+\newline
+\noindent
+Since the train leaves at 21:05, we will need to ask our 3 friends to meet at 20:50 or earlier.
+
+\subsubsection{N=5 case}
+We can see that if we meet 15 minutes early, we have a 0.859 chance of all 5 friends having a delay less than 15: $P(D_i < 15)^5 =0.859$.
+\newline
+\noindent
+If we meet 20 minutes early though, we have a 0.951 chance of making the train: $P(D_i < 20)^5 =0.951$. Hence we need to meet 20 minutes early in this case.
+\newline
+\noindent
+Since the train leaves at 21:05, we will need to ask our 5 friends to meet at 20:45 or earlier.
+
+\subsubsection{N=10 case}
+We can see that if we meet 15 minutes early, we have a 0.737 chance of all 10 friends having a delay less than 15: $P(D_i < 15)^{10} =0.729$ Hence our chance of making the train is 0.737.
+\newline
+\noindent
+If we meet 20 minutes early though, we have a 0.904 chance of making the train: $P(D_i < 20)^{10} =0.904$. Hence we need to meet 20 minutes early in this case.
+\newline
+\noindent
+Since the train leaves at 21:05, we will need to ask our 10 friends to meet at 20:45 or earlier.
+
+\subsection{Question 3, Part b.}
+You realise that some people are less punctual than others. You update your model with the unobserved binary variables $Z_i$.
+The probabilities $P(D_i|Z_i = $punctual$)$ are the same as above and $P(D_i|Z_i = $not punctual$) = (0.5, 0.2, 0.1, 0.1, 0.05, 0.05)$ where the states are ordered as above. You have a prior belief that $P(Z_i = $punctual$) = \frac{2}{3}$
+independently for all i. What are the probabilities of missing the train if you use the answers from (a) for this model? [10 marks]
+
+\subsubsection{Solution for general N}
+As in the previous part of the question, we can now define a cumulative probability distribution for a single non punctual friend.
+\newline
+
+\noindent
+$P(D_i \leq 0) = 0.5$
+\newline
+\noindent
+$P(D_i < 5) = P(D_i \leq 0) + _(0 < Di < 5) = 0.5 + 0.2 = 0.7$
+\newline
+\noindent
+$P(D_i < 10) = P(Di < 5) + P(5 \leq D_i < 10) = 0.7 + 0.1 = 0.8$
+\newline
+\noindent
+$P(D_i < 15) = P(D_i < 10) + P(10 \leq D_i < 15)= 0.8 + 0.1= 0.9$
+\newline
+\noindent
+$P(D_i < 20) = P(D_i < 15)+P(15 \leq D_i < 20) =0.9 + 0.05= 0.95$
+\newline
+
+\noindent
+Given that we also have the prior probability of $Z_i$, $P(Z_i=$ not punctual$)=1/3$, $P(Z_i=$ punctual$)=2/3$, we can marginalise over the punctuality: 
+\newline
+
+\noindent
+P(Make the train on time) = $\sum_{n=0}^{N}$P(Make the train on time $|$ n friends not punctual)P(n friends not punctual)
+\newline
+
+\noindent
+We need to evaluate both of the terms inside the summation. First, compute the distribution of how many friends will be punctual (n) of our N friends meeting in total. we can use the prior $P(Z_i)$ here. 
+\newline
+
+\noindent 
+P(n friends not punctual from N total friends) = ${N \choose n}(\frac{1}{3})^n(\frac{2}{3})^{N-n}$ 
+\newline
+
+\noindent
+Secondly, we need to compute the probability: P(Make the train on time $|$ n friends not punctual). Here we can use the reasoning that to make the train, we need $all$ of our friends to be on time. 
+\newline
+
+\noindent
+P(Make the train on time $|$ n friends not punctual)= $P_{not- punctual}(D_i<D_0)^{n} P_{punctual}(D_i<D_0)^{N-n}$
+\newline
+
+\vspace{5mm}
+\subsubsection{N=3 case}
+We will be meeting 15 minutes early so we want to work out the probability that all our friends have $D_i<15$.  Using the marginalisation over n non punctual friends, 
+\newline
+\noindent
+P(Make the train on time)=
+\newline
+\noindent
+P(Make the train on time $|$ 0 friends not punctual)P(0 friends not punctual)+
+\newline
+P(Make the train on time $|$ 1 friends not punctual)P(1 friends not punctual)+
+\newline
+P(Make the train on time $|$ 2 friends not punctual)P(2 friends not punctual)+
+\newline
+P(Make the train on time $|$ 3 friends not punctual)P(3 friends not punctual).
+\newline
+
+\vspace{5mm}
+\noindent
+$=0.97^3 0.9^0 {3 \choose 0}(\frac{1}{3})^0 (\frac{2}{3})^3
++0.97^2 0.9^1 {3 \choose 1}(\frac{1}{3})^1 (\frac{2}{3})^2
++0.97^1 0.9^2 {3 \choose 2}(\frac{1}{3})^2 (\frac{2}{3})^1
++0.97^0 0.9^3 {3 \choose 3}(\frac{1}{3})^3 (\frac{2}{3})^0$
+\newline
+=0.848
+\newline
+\noindent
+Our chance of making the train when we meet 15 minutes early has dropped from 0.912 to 0.848, now that our 3 friends have a $\frac{1}{3}$ chance of being non-punctual.
+\newline
+
+\subsubsection{N=5 case}
+Using the same method as the previous part, but now we take the marginalisation sum up to n=5. Note here that for this case, we meet 20 minutes early. For a punctual friend, $P(D_i<20)=0.99$, and for a non punctual friend, $P(D_i<20)=0.95$. 
+\newline
+\noindent
+$0.97^5 0.9^0 {5 \choose 0}(\frac{1}{3})^0 (\frac{2}{3})^5
++0.97^4 0.9^1 {5 \choose 1}(\frac{1}{3})^1 (\frac{2}{3})^4
++0.97^3 0.9^2 {5 \choose 2}(\frac{1}{3})^2 (\frac{2}{3})^3
++0.97^2 0.9^3 {5 \choose 3}(\frac{1}{3})^3 (\frac{2}{3})^2
++0.97^1 0.9^4 {5 \choose 4}(\frac{1}{3})^4 (\frac{2}{3})^1
++0.97^0 0.9^5 {5 \choose 5}(\frac{1}{3})^5 (\frac{2}{3})^0$
+\newline
+\noindent
+=0.889
+\newline
+\noindent
+Our chance of making the train when we meet 20 minutes early has dropped from 0.951 to 0.889, now that our 5 friends have a $\frac{1}{3}$ chance of being non-punctual.
+/newline
+
+\subsubsection{N=10 case}
+Using the same method as the previous part, but now we take the marginalisation sum up to n=10. Note that for this case, we meet 20 minutes early again. For a punctual friend, $P(D_i<20)=0.99$, and for a non punctual friend, $P(D_i<20)=0.95$. 
+\newline
+\noindent
+$0.97^{10} 0.9^0 {10 \choose 10}(\frac{1}{3})^{10} (\frac{2}{3})^0
++0.97^9 0.9^1 {10 \choose 9}(\frac{1}{3})^9 (\frac{2}{3})^1
++0.97^8 0.9^2 {10 \choose 8}(\frac{1}{3})^8 (\frac{2}{3})^2
++0.97^7 0.9^3 {10 \choose 7}(\frac{1}{3})^7 (\frac{2}{3})^3
++0.97^6 0.9^4 {10 \choose 6}(\frac{1}{3})^6 (\frac{2}{3})^4
++0.97^5 0.9^5 {10 \choose 5}(\frac{1}{3})^5 (\frac{2}{3})^5
++0.97^4 0.9^6 {10 \choose 4}(\frac{1}{3})^4 (\frac{2}{3})^6
++0.97^3 0.9^7 {10 \choose 3}(\frac{1}{3})^3 (\frac{2}{3})^7
++0.97^2 0.9^8 {10 \choose 2}(\frac{1}{3})^2 (\frac{2}{3})^8
++0.97^1 0.9^9 {10 \choose 1}(\frac{1}{3})^1 (\frac{2}{3})^9
++0.97^0 0.9^{10} {10 \choose 0}(\frac{1}{3})^0 (\frac{2}{3})^{10}$
+\newline
+\noindent
+=0.790
+\newline
+\noindent
+Our chance of making the train when we meet 20 minutes early has dropped from 0.904 to 0.790, now that our 10 friends have a $\frac{1}{3}$ chance of being non-punctual.
+
+
+\subsection{Bonus}
+Suppose that for N = 5 you used the answer from (a) and missed the train. Now you are wondering how many of your N friends are not punctual. What is the posterior distribution of this count? [10
+marks]
+
+\subsubsection{Solution}
+We have met 20 minutes early, we have missed the train. We want the posterior distribution of hoe many of our friends were non-punctual. Again, let $n$ stand for the number of non-punctual friends. We can write Bayes' Rule for this example:
+\newline
+\noindent
+P(n$|$missed train)=P(missed train$|$n)P(n)/P(missed train)
+\newline
+\noindent
+Now, we already have the prior distribution of $n$, and we have worked out the likelihood P(missed train$|$n) and P(missed train) from the previous part of the question. We simply have to plug everything into Bayes' Rule. 
+\newline
+
+\noindent
+$P(n=i)={5 \choose i}(\frac{1}{3})^i (\frac{2}{3})^{5-i}$
+\newline
+\noindent
+$P($missed train$|$n=i)=$(1-0.95^{i}0.99^{5-i})$
+\newline
+\noindent
+P(missed train)=$1-0.889=0.111$
+\newline
+
+\noindent
+P(n=0$|$missed train)=P(missed train$|$n=0)P(n=0)/P(missed train)
+\newline
+\noindent
+= $(1-0.95^{0}0.99^{5-0}){5 \choose 0}(\frac{1}{3})^0 (\frac{2}{3})^{5-0}$/$0.111$
+\newline 
+\noindent
+= 0.058
+\newline
+
+\noindent
+P(n=1$|$missed train)=P(missed train$|$n=1)P(n=1)/P(missed train)
+\newline
+\noindent
+= $(1-0.95^{1}0.99^{5-1}){5 \choose 1}(\frac{1}{3})^1 (\frac{2}{3})^{5-1}$/$0.111$
+\newline 
+\noindent
+= 0.258
+\newline
+
+\noindent
+P(n=2$|$missed train)=P(missed train$|$n=2)P(n=2)/P(missed train)
+\newline
+\noindent
+= $(1-0.95^{2}0.99^{5-2}){5 \choose 2}(\frac{1}{3})^2 (\frac{2}{3})^{5-2}$/$0.111$
+\newline 
+\noindent
+= 0.378
+\newline
+
+\noindent
+P(n=3$|$missed train)=P(missed train$|$n=3)P(n=3)/P(missed train)
+\newline
+\noindent
+= $(1-0.95^{3}0.99^{5-3}){5 \choose 3}(\frac{1}{3})^3 (\frac{2}{3})^{5-3}$/$0.111$
+\newline 
+\noindent
+= 0.237
+\newline
+
+\noindent
+P(n=4$|$missed train)=P(missed train$|$n=4)P(n=4)/P(missed train)
+\newline
+\noindent
+= $(1-0.95^{4}0.99^{5-4}){5 \choose 4}(\frac{1}{3})^4 (\frac{2}{3})^{5-4}$/$0.111$
+\newline 
+\noindent
+= 0.072
+\newline
+
+
+\noindent
+P(n=5$|$missed train)=P(missed train$|$n=5)P(n=5)/P(missed train)
+\newline
+\noindent
+= $(1-0.95^{5}0.99^{5-5}){5 \choose 5}(\frac{1}{3})^5 (\frac{2}{3})^{5-5}$/$0.111$
+\newline 
+\noindent
+= 0.00838
+\newline
+
+\noindent
+As a quick sanity check, we can check that all of these probabilities for P(n$|$missed train) add up to 1. (Rounding errors mean this sum is not exactly equal to 1, but it is pretty cloe.)
+\newline
+\noindent
+$0.058+0.258+0.378+0.237+0.072+0.00838=1.01\approx 1$
+
+
+
+\section{Question 4: Dunwich Hamlet}
+
+
+\end{document}
